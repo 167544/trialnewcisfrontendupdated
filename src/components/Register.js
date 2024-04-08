@@ -115,21 +115,20 @@ function Register(props) {
     };
 
     return (
-        <div style={{ display: "flex", flexDirection: "column", justifyContent: 'space-between', alignItems: 'center', height: '100vh', width: '100vw', backgroundColor: '#0A6E7C', color: 'white' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100vw', color: 'white', backgroundColor: '#0A6E7C', padding: "12px", paddingLeft: "26px" }}>
+            <div style={{ display: "flex", flexDirection: "column", justifyContent: 'space-between', alignItems: 'center', minHeight: '100vh', backgroundColor: '#0A6E7C', color: 'white' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', padding: "12px", backgroundColor: '#0A6E7C' }}>
                 <img src={logos} alt="logo" width={"50px"} height={"50px"} />
-                <h2 style={{ color: "white", fontWeight: "bold" }}>CIS Employee Management Portal</h2>
-                <img src={logos} alt="logo" width={"50px"} height={"50px"} style={{ visibility: 'hidden' }} />
+                <h2 style={{ color: "white", fontWeight: "bold", marginLeft: "10px" }}>CIS Employee Management Portal</h2>
             </div>
-            <div style={{ border: '1px solid white', width: '500px', padding: '20px', textAlign: 'center', borderRadius: '10px' }}>
+            <div style={{ border: '1px solid white', width: '90%', maxWidth: '500px', padding: '20px', textAlign: 'center', borderRadius: '10px', margin: '20px auto' }}>
                 <h1>Registration Form</h1>
                 <Form onSubmit={handleSubmit}>
                     <FormGroup>
-                        <Label for="name">Name</Label>
+                        <Label for="name">Employee ID</Label>
                         <Input
                             id="name"
                             name="name"
-                            placeholder="Name"
+                            placeholder="Employee ID"
                             type="text"
                             value={userData.name}
                             onChange={handleChange}
@@ -205,7 +204,7 @@ function Register(props) {
                     </FormGroup>
                     {isAdmin && (
                         <div>
-                            <FormGroup>
+                            <FormGroup  style ={{display:"flex" ,flexDirection:"column",justifyContent:"center",alignItems:'center'}}>
                                 <Label for="otp">OTP</Label>
                                 <Input
                                     id="otp"
@@ -214,6 +213,7 @@ function Register(props) {
                                     type="text"
                                     value={otp}
                                     onChange={(e) => setOtp(e.target.value)}
+									style={{width:"100px",textAlign:"center"}}
                                 />
                             </FormGroup>
                             {!otpSent && (
@@ -232,11 +232,8 @@ function Register(props) {
                     <Button type='submit' disabled={isAdmin && !otpVerified}>Register</Button>
                 </Form>
             </div>
-            <div style={{ visibility: "hidden", display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100vw', color: 'white', backgroundColor: '#0A6E7C' }}>
-                <img src={logos} alt="logo" width={"50px"} height={"50px"} />
-                <h2 style={{ color: "white", fontWeight: "bold" }}>CIS Employee Management Portal</h2>
-                <img src={logos} alt="logo" width={"50px"} height={"50px"} style={{ visibility: 'hidden' }} />
-            </div>
+            
+            
         </div>
     );
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -16,6 +16,7 @@ import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutl
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -40,6 +41,14 @@ const Sidebar = () => {
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
+  const [isNotUser, setIsNotUser] = useState(false);
+
+  useEffect(() => {
+    let userRole = localStorage.getItem('UserRole');
+    if(userRole === "User"){
+      setIsNotUser(true)
+    }
+  }, [])
 
   return (
     <Box
@@ -106,23 +115,17 @@ const Sidebar = () => {
               setSelected={setSelected}
               
             />
-
-            <Typography
-              variant="h6"
-              style = {{color:"white"}}
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-              Data
-            </Typography>
+            {isNotUser ? null : (
+          <>
             <Item
               title="Manage Team"
               to="/dashboard/contacts"
               icon={<PeopleOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
-           
             />
-      
+        </>
+        )}
           </Box>
         </Menu>
       </ProSidebar>

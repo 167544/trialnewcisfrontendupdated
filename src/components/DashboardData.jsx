@@ -27,8 +27,11 @@ import CategoryGraph from './CategoryGraph'
 
 function DashboardData(props) {
 
-  const userData = JSON.parse(localStorage.getItem('user'));
-  const isManagerSelectDisabled = userData && userData.role !== 'admin';
+  
+  
+  const [isUser, setIsUser] = useState(false);
+  const [isManagerSelectDisabled, setIsManagerSelectDisabled] = useState(false);
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
 
   const dispatch = useDispatch();
   const theme = useTheme();
@@ -52,6 +55,25 @@ function DashboardData(props) {
   const [selectedBoxName, setSelectedBoxName] = useState("");
   const [TotalemployeeData, setTotalEmployeeData] = useState(0);
 
+
+
+  useEffect(() => {
+    let userRole = localStorage.getItem('UserRole');
+    
+    if(userRole && userRole === 'User'){
+      setIsUser(true)
+    }
+
+    if(userRole && userRole === 'Admin'){
+      setIsManagerSelectDisabled(true)
+    }
+
+    if(userRole && userRole === 'SuperAdmin'){
+      setIsSuperAdmin(true)
+    }
+
+
+  }, [])
 
   useEffect(() => {
     fetchData();
@@ -120,7 +142,6 @@ function DashboardData(props) {
   const handlePrimarySelect = (boxName) => {
     setSelectedBoxName(boxName + 'skills');
     setSelectedData(boxName);
-    alert("hello")
   };
 
   const handleManagerSelect = (boxName) => {
@@ -150,25 +171,30 @@ function DashboardData(props) {
     { title: 'Active Employee Count', value: activeEmployeeCount, color: "#01B27C" },
     { title: 'Resources with Valid Visa', value: resourceWithValidVisaCount, color: "#003C51" },
   ];
-
+  console.log("isUser:", isUser);
+  console.log("isSuperAdmin:", isSuperAdmin);
+  console.log("isManagerSelectDisabled:", isManagerSelectDisabled);
   return (
     <>
-      <span style={{ display: 'inline-block', marginBottom: '1rem', width: '80%', }}>
+      <span style={{ display: 'inline-block', marginBottom: '1rem', width: '100%', }}>
         <div className='d-flex  ' style={{ width: '100%', }} >
-          {isManagerSelectDisabled ? null : (
+        {isUser ? null : (
+          <>
+          {!(isManagerSelectDisabled || isSuperAdmin) ? null : (
             <ManagerSelect key={managerKey} handleBoxClick={handleManagerSelect} />
           )}
           <Category handleBoxClick={handleCategory} />
           <PrimarySkills handleBoxClick={handlePrimarySelect} />
           <Button style={{ padding: '21px', height: '35px' }} className="m-2" variant="contained" color="primary" onClick={resetSelectComponent}>Reset</Button>
+          </>
+        )}
+         <div style={{ display: 'flex', marginLeft: 'auto ' }}>
+          <div style={{ height: "120px", boxShadow: '5px 5px 5px 5px', fontFamily: 'sans-serif', fontSize: '2rem', color: '#003C51' }}>
+          <h1 style={{ fontSize: '0.9rem', textAlign: 'center', padding: '0.5rem', fontWeight: 'bold' }}>Total Employee Count</h1>
+          <p style={{ textAlign: 'center', }}>{TotalemployeeData}</p>
+        </div>
+        </div>
 
-
-          <div style={{ display: 'flex', marginLeft: 'auto' }}>
-            <div style={{ height: "120px", boxShadow: '5px 5px 5px 5px', fontFamily: 'sans-serif', fontSize: '2rem', color: '#003C51' }}>
-              <h1 style={{ fontSize: '0.9rem', textAlign: 'center', padding: '0.5rem', fontWeight: 'bold' }}>Total Employee Count</h1>
-              <p style={{ textAlign: 'center', }}>{TotalemployeeData}</p>
-            </div>
-          </div>
         </div>
       </span>
 
@@ -216,12 +242,15 @@ function DashboardData(props) {
           </div>
 
           
-
+        {isUser ? null : (
+          <>
 
           <Button className="m-2" variant="contained" color="primary" onClick={() => handleBoxClick('selectedlist')}>Shortlist List</Button>
           <Button className="m-2" variant="contained" color="primary" onClick={() => handleBoxClick('removedlist')}>Removed List</Button>
 
           {showRepresentation && <DashboardRepresentation data={selectedBoxName} />}
+          </>
+        )}
         </div>
       </div>
     </>

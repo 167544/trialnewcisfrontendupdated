@@ -25,12 +25,12 @@ function LoginPage(props) {
             });
           
             if (response.ok) {
-                alert("Login successful")
+                //alert("Login successful")
                 const data = await response.json();
-                alert(data.message);
-                alert(data.user.name)
-                alert(data.user.Username)
-                alert(data.user.userRole)
+                alert(data.message + " user role : " + data.user.userRole);
+                 alert(data.user.name)
+                // alert(data.user.Username)
+               // alert(data.user.userRole)
                
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('Username' , data.user.Username)
